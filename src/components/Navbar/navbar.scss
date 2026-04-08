@@ -1,0 +1,175 @@
+@use '../../assets/css/partials/base' ;
+
+
+
+
+.site-logo {
+    height: 3.5rem;
+}
+
+.offcanvas-logo {
+    height: 3rem;
+}
+
+.main-navbar {
+    background-color: base.$white-color;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    z-index: 100;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+
+    .navbar-toggler {
+        border: none;
+        color: base.$black-color;
+        transition: all ease-in-out .3s;
+
+        &:focus,
+        &:focus-visible,
+        &:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        &:hover {
+            color: base.$theme-color-2;
+        }
+    }
+
+    .navbar-nav {
+        li {
+            a {
+                text-transform: uppercase;
+            }
+
+            &:not(:first-child) {
+                margin-left: 2.5rem;
+            }
+        }
+    }
+
+}
+
+.offcanvas {
+    background-color: base.$white-color;
+
+    .btn-close {
+        --bs-btn-close-bg: none;
+        opacity: 1;
+        transition: all ease-in-out .3s;
+
+        &:focus,
+        &:focus-visible,
+        &:active {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        &:hover {
+            color: base.$theme-color-2;
+        }
+    }
+
+
+
+    .navbar-nav {
+        padding-top: 3rem;
+
+        li {
+
+
+            a {
+                text-transform: uppercase;
+                position: relative;
+                padding-bottom: 1rem !important;
+
+                &::before {
+                    padding-bottom: 1rem !important;
+                    font-family: 'icomoon';
+                    content: "\e907";
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    right: 0;
+                    color: base.$theme-color-2;
+                    font-size: 1rem;
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    background-color: base.$black-color;
+                    height: 1px;
+                    transition: all ease-in-out .5s;
+
+                }
+
+                &:hover {
+                    &::after {
+                        background-color: base.$theme-color-2;
+                    }
+                }
+            }
+
+            &:not(:last-child) {
+                margin-bottom: 1.2rem;
+            }
+
+        }
+
+    }
+
+    ul.contact-info-navbar {
+        margin-top: 5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        li {
+            a {
+                display: flex;
+                align-items: center;
+                gap: 1.2rem;
+                color: base.$black-color;
+                transition: all ease-in-out .3s;
+
+                i {
+                    color: base.$white-color;
+                    background-color: base.$black-color;
+                    border-radius: 50%;
+                    padding: .75rem;
+                    font-size: 1rem;
+                    transition: all ease-in-out .3s;
+                }
+
+                &:hover {
+                    color: base.$theme-color-2;
+
+                    i {
+                        background-color: base.$theme-color-2;
+                    }
+                }
+            }
+
+
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

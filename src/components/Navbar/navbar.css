@@ -1,0 +1,237 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+a,
+ul,
+li,
+p,
+button,
+figure,
+img,
+input {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+body {
+  overflow: hidden;
+  overflow-y: auto;
+  font-family: "Poppins", sans-serif;
+}
+
+.container-md {
+  max-width: 1400px;
+}
+
+.container-sm {
+  max-width: 1100px;
+}
+
+.section-space {
+  margin-bottom: 5rem;
+}
+
+.d_flex {
+  display: flex;
+}
+
+.align_center {
+  align-items: center;
+}
+
+.justify_center {
+  justify-content: center;
+}
+
+.justify_space {
+  justify-content: space-between;
+}
+
+.f_content {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.theme_para {
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
+  font-family: "Inter", sans-serif;
+  padding-bottom: 2rem;
+}
+
+.section_heading h2 {
+  font-size: clamp(2rem, 2vw, 3rem);
+  color: #000;
+  font-weight: 700;
+  padding-bottom: 1rem;
+  text-transform: capitalize;
+}
+.section_heading h2 span {
+  text-transform: uppercase;
+  padding-bottom: 0.75rem;
+  display: block;
+  font-size: 40%;
+  letter-spacing: 0.25rem;
+  font-weight: bold;
+  color: #313131;
+}
+
+.theme-button {
+  display: inline-block;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all ease-in-out 0.3s;
+  text-transform: capitalize;
+}
+
+.main_theme_button {
+  background: linear-gradient(135deg, #00a1f2 0%, #504bfd 80%);
+  color: #fff;
+  position: relative;
+}
+.main_theme_button::after {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0;
+  transition: all ease-in-out 0.3s;
+}
+.main_theme_button:hover::after {
+  opacity: 0.25;
+}
+
+.site-logo {
+  height: 3.5rem;
+}
+
+.offcanvas-logo {
+  height: 3rem;
+}
+
+.main-navbar {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5rem;
+  z-index: 100;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.main-navbar .navbar-toggler {
+  border: none;
+  color: #000;
+  transition: all ease-in-out 0.3s;
+}
+.main-navbar .navbar-toggler:focus, .main-navbar .navbar-toggler:focus-visible, .main-navbar .navbar-toggler:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.main-navbar .navbar-toggler:hover {
+  color: #504bfd;
+}
+.main-navbar .navbar-nav li a {
+  text-transform: uppercase;
+}
+.main-navbar .navbar-nav li:not(:first-child) {
+  margin-left: 2.5rem;
+}
+
+.offcanvas {
+  background-color: #fff;
+}
+.offcanvas .btn-close {
+  --bs-btn-close-bg: none;
+  opacity: 1;
+  transition: all ease-in-out 0.3s;
+}
+.offcanvas .btn-close:focus, .offcanvas .btn-close:focus-visible, .offcanvas .btn-close:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.offcanvas .btn-close:hover {
+  color: #504bfd;
+}
+.offcanvas .navbar-nav {
+  padding-top: 3rem;
+}
+.offcanvas .navbar-nav li a {
+  text-transform: uppercase;
+  position: relative;
+  padding-bottom: 1rem !important;
+}
+.offcanvas .navbar-nav li a::before {
+  padding-bottom: 1rem !important;
+  font-family: "icomoon";
+  content: "\e907";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  color: #504bfd;
+  font-size: 1rem;
+}
+.offcanvas .navbar-nav li a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #000;
+  height: 1px;
+  transition: all ease-in-out 0.5s;
+}
+.offcanvas .navbar-nav li a:hover::after {
+  background-color: #504bfd;
+}
+.offcanvas .navbar-nav li:not(:last-child) {
+  margin-bottom: 1.2rem;
+}
+.offcanvas ul.contact-info-navbar {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.offcanvas ul.contact-info-navbar li a {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  color: #000;
+  transition: all ease-in-out 0.3s;
+}
+.offcanvas ul.contact-info-navbar li a i {
+  color: #fff;
+  background-color: #000;
+  border-radius: 50%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  transition: all ease-in-out 0.3s;
+}
+.offcanvas ul.contact-info-navbar li a:hover {
+  color: #504bfd;
+}
+.offcanvas ul.contact-info-navbar li a:hover i {
+  background-color: #504bfd;
+}/*# sourceMappingURL=navbar.css.map */
