@@ -1,12 +1,14 @@
-
+import MainHero from "../components/MainHeroSection/mainhero";
+import ServicesHome from "../components/ServicesSection/serviceshome";
 
 
 function HomePage(){
 
 return(
-    <>
-    <h1>HomePage</h1>
-    </>
+   <>
+    <MainHero/>
+    <ServicesHome/>
+   </>
 )
 
 }

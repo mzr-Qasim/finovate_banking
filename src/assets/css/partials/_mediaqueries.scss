@@ -1,0 +1,13 @@
+@media (max-width: 992px) {
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    img.content-img {
+      max-height: 250px !important;
+    }
+  }
+  .hero-row {
+    gap: 100px;
+  }
+}

@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import './navbar.scss' ;
+import logo from "../../assets/images/logo.svg";
 
 
 function Navbar() {
@@ -7,11 +8,11 @@ function Navbar() {
     <>
       <header className="header">
         <nav className="navbar navbar-expand-lg main-navbar">
-          <div className="container">
+          <div className="container container-md">
             <Link className="navbar-brand" to={"/"}>
               <img
                 className="site-logo"
-                src="assets/images/main-logo.svg"
+                src={logo}
                 alt="df"
               />
             </Link>
@@ -22,7 +23,7 @@ function Navbar() {
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
             >
-              <i className="icon-navbar-hamburger"></i>
+              <i className="icon-hamburger"></i>
             </button>
             <div className="collapse navbar-collapse">
               <ul className="ms-auto mb-2 mb-lg-0 navbar-nav" >
@@ -31,31 +32,23 @@ function Navbar() {
                     className="nav-link theme-links theme-links-animation"
                     to={"/"}
                   >
-                    Home
+                    home
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link
                     className="nav-link theme-links theme-links-animation"
-                    to={"/"}
+                    to={"dashboard/"}
                   >
-                    Home
+                    services
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link
                     className="nav-link theme-links theme-links-animation"
-                    to={"/"}
+                    to={"dashboard/"}
                   >
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className="nav-link theme-links theme-links-animation"
-                    to={"/"}
-                  >
-                    Home
+                    dashboard
                   </Link>
                 </li>
                 <li className="nav-item">
@@ -63,7 +56,7 @@ function Navbar() {
                     className="nav-link theme-links theme-links-animation"
                     to={"/login"}
                   >
-                    LOGIN
+                    login
                   </Link>
                 </li>
               </ul>
@@ -71,7 +64,7 @@ function Navbar() {
           </div>
         </nav>
         <div
-          className="offcanvas-end offcanvas"
+          className="offcanvas offcanvas-end"
           tabIndex="-1"
           id="offcanvasRight"
           aria-labelledby="offcanvasRightLabel"
@@ -80,7 +73,7 @@ function Navbar() {
             <Link className="navbar-brand" to={"/"}>
               <img
                 className="offcanvas-logo"
-                src="assets/images/main-logo.svg"
+                src={logo}
                 alt=""
               />
             </Link>
@@ -101,41 +94,18 @@ function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link theme-links" to={"/"}>
-                  Home
+                <Link className="nav-link theme-links" to={"dashboard/"}>
+                  services
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link theme-links" to={"/"}>
-                  Home
+                <Link className="nav-link theme-links" to={"dashboard/"}>
+                  Dashboard
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link theme-links" to={"/"}>
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link theme-links" to={"/"}>
-                  Home
-                </Link>
-              </li>
-            </ul>
-            <ul className="contact-info-navbar">
-              <li>
-                <Link to={"/"}>
-                  <span>
-                    <i className="icon-call-us"></i>
-                  </span>
-                  (704) 555-0127 00 22
-                </Link>
-              </li>
-              <li>
-                <Link to={"/"}>
-                  <span>
-                    <i className="icon-email"></i>
-                  </span>
-                  3@gmail.com
+                <Link className="nav-link theme-links" to={"dashboard/"}>
+                  Login
                 </Link>
               </li>
             </ul>

@@ -2,7 +2,7 @@ function DashboardPage(){
 
     return(
     <>
-    <h1>DashBoard Page</h1>
+    <div className="">    <h1>DashBoard Page</h1></div>
     </>
 
 )

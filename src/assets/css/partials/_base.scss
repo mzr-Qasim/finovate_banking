@@ -1,12 +1,10 @@
+@use "./fonts";
+
 $black-color: #000;
 $white-color: #fff;
-$theme-background: linear-gradient(90deg, rgba(79, 33, 255, 1) 0%, rgba(208, 107, 255, 1) 100%);
 
 $theme-color: #00a1f2;
 $theme-color-2: #504bfd;
-
-
-
 
 h1,
 h2,
@@ -21,134 +19,152 @@ button,
 figure,
 img,
 input {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 button {
-    border: none;
-    background-color: transparent;
+  border: none;
+  background-color: transparent;
 }
 
 body {
-    overflow: hidden;
-    overflow-y: auto;
-    font-family: "Poppins", sans-serif;
+  overflow: hidden;
+  overflow-y: auto;
+  font-family: "Inter", sans-serif;
+  background-color: #050505;
 }
+
+
+
 
 .container-md {
-    max-width: 1400px;
+  max-width: 1500px;
 }
-
 
 .container-sm {
-    max-width: 1100px;
+  max-width: 1100px;
 }
-
-
-
-
 
 .section-space {
-    margin-bottom: 5rem;
+  margin-bottom: 50rem;
 }
 
-
 .d_flex {
-    display: flex;
+  display: flex;
 }
 
 .align_center {
-    align-items: center;
+  align-items: center;
 }
 
 .justify_center {
-    justify-content: center;
+  justify-content: center;
 }
 
-.justify_space{
-    justify-content: space-between;
+.justify_space {
+  justify-content: space-between;
 }
 
 .f_content {
-    width: fit-content;
+  width: fit-content;
 }
-
-
-
-
 
 .theme_para {
-    font-size: clamp(1.2rem, 2vw, 1.4rem);
-    font-family: "Inter", sans-serif;
-    padding-bottom: 2rem;
+  font-size: clamp(1.2rem, 2vw, 1.4rem);
 }
+
 
 
 .section_heading {
-    h2 {
-        font-size: clamp(2rem, 2vw, 3rem);
-        color: $black-color;
-        font-weight: 700;
-        padding-bottom: 1rem;
-        text-transform: capitalize;
-
-        span {
-            text-transform: uppercase;
-            padding-bottom: .75rem;
-            display: block;
-            font-size: 40%;
-            letter-spacing: .25rem;
-            font-weight: bold;
-            color: #313131;
-        }
-    }
-}
-
-
-
-.theme-button {
-    display: inline-block;
-    width: fit-content;
-    border-radius: 5px;
-    padding: .75rem 2rem;
-    font-weight: 600;
-    transition: all ease-in-out .3s;
+  h2 {
+    font-size: clamp(2rem, 2vw, 3rem);
+    color: $black-color;
+    font-weight: 700;
+    padding-bottom: 1rem;
     text-transform: capitalize;
 
-
+    span {
+      text-transform: uppercase;
+      padding-bottom: 0.75rem;
+      display: block;
+      font-size: 40%;
+      letter-spacing: 0.25rem;
+      font-weight: bold;
+      color: #313131;
+    }
+  }
 }
 
-
+.theme-button {
+  display: inline-block;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  transition: all ease-in-out 0.3s;
+  text-transform: capitalize;
+}
 
 .main_theme_button {
-    background: linear-gradient(135deg, #{$theme-color} 0%, #{$theme-color-2} 80%);
-    color: $white-color;
-    position: relative;
+  background-color: $white-color;
+  color: $black-color;
 
-    &::after{
-        position: absolute;
-        content: '';
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: $white-color;
-        opacity: 0;
-        transition: all ease-in-out .3s;
-    }
-    &:hover {
-        &::after{
-            opacity: .25;
-        }
-    }
+  &:hover {
+    background-color: $black-color;
+    color: $white-color;
+  }
 }
+
+
+
+
+
+
+
+// import { useEffect, useState } from "react";
+
+// export default function Navbar() {
+//   const [scrolled, setScrolled] = useState(false);
+
+//   useEffect(() => {
+//     const handleScroll = () => {
+//       setScrolled(window.scrollY > 50);
+//     };
+
+//     window.addEventListener("scroll", handleScroll);
+
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+//   return (
+//     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
+//       <h1>Logo</h1>
+//     </nav>
+//   );
+// }
+
+
+// .navbar.scrolled {
+//   background: rgba(15, 23, 42, 0.9);
+//   backdrop-filter: blur(10px);
+//   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+//   padding: 15px;
+// }
+
+
+
+
+
+
+
+
 
