@@ -1,9 +1,17 @@
 import { Link } from "react-router";
 import './navbar.scss' ;
 import logo from "../../assets/images/logo.svg";
+import { useState} from "react";
+
+
+// class Navbar        .show  
+
 
 
 function Navbar() {
+
+
+
   return (
     <>
       <header className="header">
@@ -22,6 +30,7 @@ function Navbar() {
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
+             
             >
               <i className="icon-hamburger"></i>
             </button>
@@ -46,17 +55,17 @@ function Navbar() {
                 <li className="nav-item">
                   <Link
                     className="nav-link theme-links theme-links-animation"
-                    to={"dashboard/"}
+                    to={"login/"}
                   >
-                    dashboard
+                    login
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link
                     className="nav-link theme-links theme-links-animation"
-                    to={"/register"}
+                    to={"register/"}
                   >
-                    login
+                    dashboard
                   </Link>
                 </li>
               </ul>

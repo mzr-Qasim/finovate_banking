@@ -1,4 +1,5 @@
-import RegisterSection from "../components/RegisterSection/RegisterSection"
+import RegisterSection from "../components/RegisterSection/register";
+
 
 function RegisterPage() {
   return (

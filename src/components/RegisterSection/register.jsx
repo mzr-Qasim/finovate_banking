@@ -1,4 +1,6 @@
-import './registersection.scss';
+import './register.scss';
+
+
 
 
 function RegisterSection() {
@@ -18,34 +20,34 @@ function RegisterSection() {
                     ></div>
                   </div>
 
-                  <div className="d-flex justify-content-between mb-5">
+                  <div className="signup-steps-ui d-flex justify-content-between mb-5">
                     <div className="d-flex flex-column align-items-center">
-                      <div className="btn btn-primary rounded-circle mb-2">
-                        <i className="bi bi-person-fill"></i>
+                      <div className="signup-steps active-step btn btn-secondary rounded-circle mb-2">
+                        <i className="icon-basic-information"></i>
                       </div>
-                      <div className="text-muted small">Personal</div>
+                      <div className="text-muted small">Basic Information</div>
                     </div>
                     <div className="d-flex flex-column align-items-center">
-                      <div className="btn btn-secondary rounded-circle mb-2">
-                        <i className="bi bi-house-fill"></i>
+                      <div className="signup-steps btn btn-secondary rounded-circle mb-2">
+                        <i className="icon-identity-details"></i>
                       </div>
-                      <div className="text-muted small">Address</div>
+                      <div className="text-muted small">Identity Details</div>
                     </div>
                     <div className="d-flex flex-column align-items-center">
-                      <div className="btn btn-secondary rounded-circle mb-2">
-                        <i className="bi bi-credit-card-fill"></i>
+                      <div className="signup-steps btn btn-secondary mb-2">
+                        <i className="icon-security-setup"></i>
                       </div>
-                      <div className="text-muted small">Payment</div>
+                      <div className="text-muted small">Security Setup</div>
                     </div>
                     <div className="d-flex flex-column align-items-center">
-                      <div className="btn btn-secondary rounded-circle mb-2">
-                        <i className="bi bi-list-check"></i>
+                      <div className="signup-steps btn btn-secondary rounded-circle mb-2">
+                        <i className="icon-profile"></i>
                       </div>
-                      <div className="text-muted small">Review</div>
+                      <div className="text-muted small">Profile</div>
                     </div>
                     <div className="d-flex flex-column align-items-center">
-                      <div className="btn btn-secondary rounded-circle mb-2">
-                        <i className="bi bi-check-lg"></i>
+                      <div className="signup-steps btn btn-secondary mb-2">
+                        <i className="icon-confirm"></i>
                       </div>
                       <div className="text-muted small">Confirm</div>
                     </div>
@@ -65,16 +67,25 @@ function RegisterSection() {
                       <label className="form-label">Phone Number</label>
                       <input type="tel" className="form-control" required />
                     </div>
+                    <div className="mb-3">
+                      <label className="form-label">Password</label>
+                      <input type="tel" className="form-control" required />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Confirm Password</label>
+                      <input type="tel" className="form-control" required />
+                    </div>
+                 
                     <div className="d-flex justify-content-end mt-4">
-                      <button className="btn btn-primary px-4">Next</button>
+                      <button className="theme-button  main_theme_button px-4">Next</button>
                     </div>
                   </div>
 
                   <div className="step d-none" id="step2">
                     <h4 className="mb-4">Address Details</h4>
-                    <div className="mb-3">
-                      <label className="form-label">Street Address</label>
-                      <input type="text" className="form-control" required />
+                     <div className="mb-3">
+                      <label className="form-label">CNIC / National ID</label>
+                      <input type="tel" className="form-control" required />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">City</label>
@@ -171,6 +182,7 @@ function RegisterSection() {
           </div>
         </div>
       </section>
+      
     </>
   );
 }

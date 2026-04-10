@@ -166,22 +166,36 @@ body {
   background-color: rgb(91, 33, 226);
 }
 
-@media (max-width: 991px) {
-  .hero-inner {
-    display: flex;
-    align-items: center;
-    text-align: center;
-  }
-  .hero-inner img.content-img {
-    max-height: 250px !important;
-  }
-  .hero-row {
-    gap: 100px;
-  }
+.register-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 0;
 }
-@media (max-width: 768px) {
-  .signup-steps-ui {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-}/*# sourceMappingURL=main.css.map */
+.register-section .progress-bar {
+  background-color: rgb(91, 33, 226);
+}
+.register-section .signup-steps {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+.register-section .signup-steps i {
+  font-size: 1.3rem;
+}
+.register-section .signup-steps.active-step {
+  background-color: rgb(91, 33, 226);
+}
+.register-section .signup-steps.active-step i {
+  color: #fff;
+}
+.register-section .next-step-button {
+  background-color: rgb(91, 33, 226);
+  border: none;
+}/*# sourceMappingURL=register.css.map */

@@ -11,3 +11,10 @@
     gap: 100px;
   }
 }
+
+@media (max-width: 768px) {
+  .signup-steps-ui {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}

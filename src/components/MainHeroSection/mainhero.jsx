@@ -12,7 +12,7 @@ function MainHero() {
             <div className="col-lg-7 col-md-12">
               <div className="hero-inner">
                 <h1>
-                  Your finances matters,<span>and that matters to us.</span>
+                  Your finances matters,<span> and that matters to us.</span>
                 </h1>
                 <p className="theme_para">
                   We are your go-to source for all your borrowing needs, whether
