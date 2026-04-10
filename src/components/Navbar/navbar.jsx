@@ -54,7 +54,7 @@ function Navbar() {
                 <li className="nav-item">
                   <Link
                     className="nav-link theme-links theme-links-animation"
-                    to={"/login"}
+                    to={"/register"}
                   >
                     login
                   </Link>
