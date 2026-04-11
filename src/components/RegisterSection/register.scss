@@ -1,4 +1,4 @@
-@use '../../assets/css/partials/base';
+@use "../../assets/css/partials/base";
 
 .register-section {
   min-height: 100vh;
@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 5rem 0;
-  .progress-bar{
+  .progress-bar {
     background-color: base.$theme-color;
   }
   .signup-steps {
@@ -20,16 +20,19 @@
     border: none;
     i {
       font-size: 1.3rem;
+      color: base.$white-color;
     }
     &.active-step {
       background-color: base.$theme-color;
       i {
         color: base.$white-color;
       }
-     
+    }
+    &.completed-step {
+      background-color: base.$verify-color;
     }
   }
-  .next-step-button{
+  .next-step-button {
     background-color: base.$theme-color;
     border: none;
   }

@@ -9,8 +9,11 @@ import { useState} from "react";
 
 
 function Navbar() {
+  const [showNavbar, setShowNavbar] = useState(false);
 
-
+  const navbarShow = () => {
+    setShowNavbar(!showNavbar)
+  }
 
   return (
     <>
@@ -30,6 +33,7 @@ function Navbar() {
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasRight"
               aria-controls="offcanvasRight"
+              onClick={navbarShow}
              
             >
               <i className="icon-hamburger"></i>
@@ -73,7 +77,7 @@ function Navbar() {
           </div>
         </nav>
         <div
-          className="offcanvas offcanvas-end"
+          className={`offcanvas offcanvas-end ${showNavbar ? 'show' : ''}`}
           tabIndex="-1"
           id="offcanvasRight"
           aria-labelledby="offcanvasRightLabel"
@@ -91,6 +95,7 @@ function Navbar() {
               className="btn-close"
               data-bs-dismiss="offcanvas"
               aria-label="Close"
+              onClick={navbarShow}
             >
               <i className="icon-hamburger-close"></i>
             </button>
