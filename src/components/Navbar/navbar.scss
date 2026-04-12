@@ -4,7 +4,6 @@
   height: 2.25rem;
 }
 
-
 .offcanvas-logo {
   height: 1.8rem;
 }
@@ -18,10 +17,12 @@
   padding: 20px;
   z-index: 1000;
 
-  .navbar-toggler {
+  button.navbar-toggler {
     border: none;
-    color: base.$black-color;
     transition: all ease-in-out 0.3s;
+    i.icon-hamburger{
+      font-size: 1.5rem;
+    }
 
     &:focus,
     &:focus-visible,
@@ -29,10 +30,7 @@
       outline: none !important;
       box-shadow: none !important;
     }
-
-    &:hover {
-      color: purple;
-    }
+    
   }
 
   .navbar-nav {
@@ -43,7 +41,7 @@
         background-color: rgba(255, 255, 255, 0);
         border-radius: 5px;
         font-size: 1.1rem;
-        transition: all ease-in-out .3s;
+        transition: all ease-in-out 0.3s;
       }
 
       &:not(:first-child) {
@@ -60,7 +58,7 @@
 }
 
 .offcanvas {
-  background-color: #050505;
+  background-color: base.$uicore-dark-color;
   min-height: 100vh;
 
   .btn-close {
@@ -74,10 +72,10 @@
       outline: none !important;
       box-shadow: none !important;
     }
-
-    &:hover {
-      color: purple;
+    i.icon-hamburger-close{
+      font-size: 1.5rem;
     }
+
   }
 
   .navbar-nav {
@@ -108,4 +106,12 @@
       }
     }
   }
+}
+
+
+
+.navbar.scrolled {
+  background-color: base.$uicore-dark-color;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }

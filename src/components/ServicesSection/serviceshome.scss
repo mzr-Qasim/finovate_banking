@@ -1,1 +1,37 @@
+@use "../../assets/css/partials/base";
 
+.service-cards {
+  .card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    background-color: base.$theme-color-4;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    border-radius: 15px;
+    padding: 2rem 1.5rem;
+    min-height: 100%;
+
+    .icon {
+      font-size: 2rem;
+      color: base.$ui-theme-font;
+      transition: all 0.3s ease;
+    }
+
+    .heading {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      color: base.$white-color;
+    }
+    &:hover {
+      border-color: base.$theme-color-2;
+      box-shadow:
+        0 0 6px rgba(base.$theme-color-2, 0.4),
+        0 0 18px rgba(base.$theme-color-2, 0.2);
+
+      .icon {
+        color: base.$theme-color-2;
+      }
+    }
+  }
+}

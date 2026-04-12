@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?h245uk');
-  src:  url('fonts/icomoon.eot?h245uk#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?h245uk') format('truetype'),
-    url('fonts/icomoon.woff?h245uk') format('woff'),
-    url('fonts/icomoon.svg?h245uk#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?ydb46m');
+  src:  url('fonts/icomoon.eot?ydb46m#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?ydb46m') format('truetype'),
+    url('fonts/icomoon.woff?ydb46m') format('woff'),
+    url('fonts/icomoon.svg?ydb46m#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,29 +25,38 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-basic-information:before {
+.icon-account-management:before {
   content: "\e900";
 }
-.icon-confirm:before {
+.icon-basic-information:before {
   content: "\e901";
 }
-.icon-hamburger:before {
+.icon-confirm:before {
   content: "\e902";
-  color: #fff;
 }
-.icon-hamburger-close:before {
+.icon-hamburger:before {
   content: "\e903";
   color: #fff;
 }
-.icon-identity-details:before {
+.icon-hamburger-close:before {
   content: "\e904";
+  color: #fff;
 }
-.icon-otp-verification:before {
+.icon-identity-details:before {
   content: "\e905";
 }
-.icon-profile:before {
+.icon-money-transfer:before {
   content: "\e906";
 }
-.icon-security-setup:before {
+.icon-otp-verification:before {
   content: "\e907";
+}
+.icon-profile:before {
+  content: "\e908";
+}
+.icon-secure-banking:before {
+  content: "\e909";
+}
+.icon-security-setup:before {
+  content: "\e90a";
 }

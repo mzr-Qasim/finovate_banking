@@ -19,7 +19,7 @@
     align-items: center;
     border: none;
     i {
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       color: base.$white-color;
     }
     &.active-step {
@@ -29,7 +29,7 @@
       }
     }
     &.completed-step {
-      background-color: base.$verify-color;
+      background-color: base.$verify-signup-color;
     }
   }
   .next-step-button {
