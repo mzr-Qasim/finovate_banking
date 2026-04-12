@@ -124,7 +124,7 @@ function Navbar() {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link theme-links" to={"dashboard/"}>
+                <Link className="nav-link theme-links" to={"register/"}>
                   Login
                 </Link>
               </li>
