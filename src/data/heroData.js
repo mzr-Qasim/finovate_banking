@@ -1,3 +1,4 @@
+import heroImage from "../assets/images/main_hero_content.png";
 const mainHeroData = {
     
   homepage: {
@@ -7,7 +8,7 @@ const mainHeroData = {
     hero_detail:
       "We are your go-to source for all your borrowing needs, whether it’s a personal loan, car loan, mortgage, or anything in between. Our mission is to make lending easy and accessible to everyone, regardless of their financial situation.",
     hero_button: "get started",
-    hero_floating_card: "src/assets/images/main_hero_content.png",
+    hero_floating_card: heroImage,
   },
 
   about: {
