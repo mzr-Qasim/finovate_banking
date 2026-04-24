@@ -1,40 +1,39 @@
+
+
+
 import { useState } from "react";
 import "./register.scss";
 import securityQuestions from "../../data/securityQuestions";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+// ─── Constants ───────────────────────────────────────────────────────────────
 
 const TOTAL_STEPS = 5;
+
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_SIZE_MB = 2;
 
-// ─── Regex Patterns ───────────────────────────────────────────────────────────
-// Kept as named constants so validation reads like plain English.
+// ─── Regex patterns ───────────────────────────────────────────────────────────
 
 const REGEX = {
-  // Basic email shape: something@something.something
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-
-  // Pakistani mobile numbers start with 03 and are 11 digits total
+  // Pakistani mobile: 03XX-XXXXXXX (11 digits, starts with 03)
   phone: /^03[0-9]{9}$/,
-
-  // Strong password: min 8 chars, needs uppercase, digit, and special character
-  password:
-    /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/,
-
-  // Pakistani CNIC format: 12345-1234567-1
+  // Password: min 8 chars, at least one uppercase, one digit, one special char
+  password: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/,
+  // CNIC: XXXXX-XXXXXXX-X
   cnic: /^[0-9]{5}-[0-9]{7}-[0-9]{1}$/,
-
-  // OTP is 4 to 6 digits only
+  // OTP: 4 to 6 digits
   otp: /^[0-9]{4,6}$/,
-
-  // Monthly income: digits only, no letters or symbols
+  // Monthly income: digits only
   income: /^[0-9]+$/,
 };
 
-// ─── CNIC Auto-formatter ──────────────────────────────────────────────────────
-// Strips non-digits and inserts dashes at the right positions as the user types.
-// Input: "3520112345671" → Output: "35201-1234567-1"
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * Formats a raw digit string into CNIC format: XXXXX-XXXXXXX-X
+ * Called inside a dedicated CNIC change handler.
+ */
 const formatCnic = (raw) => {
   const digits = raw.replace(/[^0-9]/g, "").slice(0, 13);
   if (digits.length <= 5) return digits;
@@ -42,10 +41,32 @@ const formatCnic = (raw) => {
   return `${digits.slice(0, 5)}-${digits.slice(5, 12)}-${digits.slice(12)}`;
 };
 
+/**
+ * Returns true if the user is at least 18 years old based on the given date string.
+ */
+const isAtLeast18 = (dateString) => {
+  const dob = new Date(dateString);
+  const today = new Date();
+  const age = today.getFullYear() - dob.getFullYear();
+  const hasHadBirthdayThisYear =
+    today.getMonth() > dob.getMonth() ||
+    (today.getMonth() === dob.getMonth() && today.getDate() >= dob.getDate());
+  return age > 18 || (age === 18 && hasHadBirthdayThisYear);
+};
+
+// ─── Inline error display ─────────────────────────────────────────────────────
+
+const FieldError = ({ name, errors }) =>
+  errors[name] ? (
+    <div className="invalid-feedback d-block" role="alert">
+      {errors[name]}
+    </div>
+  ) : null;
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 function RegisterSection() {
-  // Hooks must always be declared at the top — this is a React rule
+  // All hooks at the top — required by React rules of hooks
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -67,11 +88,12 @@ function RegisterSection() {
     profile_picture: null,
   });
 
-  // ── Change Handlers ──────────────────────────────────────────────────────────
+  // ── Handlers ────────────────────────────────────────────────────────────────
 
-  // Generic handler for all plain text/select inputs.
-  // Uses the functional form of setState to avoid stale state bugs.
-  // Also clears the error for that field as the user starts typing.
+  /**
+   * Generic change handler — uses functional updater to avoid stale state.
+   * Also clears the error for the changed field on each keystroke.
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -80,7 +102,10 @@ function RegisterSection() {
     }
   };
 
-  // CNIC gets its own handler because we auto-format it while typing
+  /**
+   * Dedicated CNIC handler — auto-formats input into XXXXX-XXXXXXX-X as the
+   * user types, so they never have to think about the dashes.
+   */
   const handleCnicChange = (e) => {
     const formatted = formatCnic(e.target.value);
     setFormData((prev) => ({ ...prev, cnic: formatted }));
@@ -89,17 +114,10 @@ function RegisterSection() {
     }
   };
 
-  // Income gets its own handler to silently block non-numeric characters
-  const handleIncomeChange = (e) => {
-    const value = e.target.value;
-    // Only update state if the value is empty or all digits — never store letters
-    if (value === "" || REGEX.income.test(value)) {
-      handleChange(e);
-    }
-  };
-
-  // File upload: the browser's accept attribute is just a hint — we enforce
-  // allowed types and file size ourselves here in JS.
+  /**
+   * File upload handler — validates type and size in JS before accepting the
+   * file. The `accept` attribute on the input is UI-only and easily bypassed.
+   */
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -109,7 +127,7 @@ function RegisterSection() {
         ...prev,
         profile_picture: "Only JPG, PNG, or WEBP images are allowed",
       }));
-      e.target.value = ""; // reset the file input
+      e.target.value = "";
       return;
     }
 
@@ -122,15 +140,21 @@ function RegisterSection() {
       return;
     }
 
-    // File is valid — clear any previous error and save it
     setErrors((prev) => ({ ...prev, profile_picture: "" }));
     setFormData((prev) => ({ ...prev, profile_picture: file }));
   };
 
+  const submitHandler = (e) => {
+    e.preventDefault();
+    // TODO: wire up API call here
+  };
+
   // ── Validation ───────────────────────────────────────────────────────────────
 
-  // Validates only the current step. Writes per-field error messages so the
-  // user knows exactly what to fix. Returns true if there are no errors.
+  /**
+   * Validates the current step and populates per-field error messages.
+   * Returns true only when there are zero errors.
+   */
   const validateStep = (currentStep) => {
     const newErrors = {};
 
@@ -145,7 +169,6 @@ function RegisterSection() {
         newErrors.email = "Enter a valid email address";
       }
 
-      // Strip dashes/spaces before testing — allows "0300-1234567" or "0300 1234567"
       const rawPhone = formData.phone_number.replace(/[-\s]/g, "");
       if (!REGEX.phone.test(rawPhone)) {
         newErrors.phone_number =
@@ -185,21 +208,8 @@ function RegisterSection() {
 
       if (!formData.date_of_birth) {
         newErrors.date_of_birth = "Date of birth is required";
-      } else {
-        // Check that the user is at least 18 years old
-        const dob = new Date(formData.date_of_birth);
-        const today = new Date();
-        const age = today.getFullYear() - dob.getFullYear();
-        const birthdayPassedThisYear =
-          today.getMonth() > dob.getMonth() ||
-          (today.getMonth() === dob.getMonth() &&
-            today.getDate() >= dob.getDate());
-        const isAdult = age > 18 || (age === 18 && birthdayPassedThisYear);
-
-        if (!isAdult) {
-          newErrors.date_of_birth =
-            "You must be at least 18 years old to register";
-        }
+      } else if (!isAtLeast18(formData.date_of_birth)) {
+        newErrors.date_of_birth = "You must be at least 18 years old to register";
       }
 
       if (!formData.full_address.trim()) {
@@ -208,19 +218,16 @@ function RegisterSection() {
     }
 
     if (currentStep === 4) {
-      // security_question_id is "" by default — the empty string is falsy
       if (!formData.security_question_id) {
         newErrors.security_question_id = "Please select a security question";
       }
 
-      if (formData.security_answer.trim().length < 3) {
-        newErrors.security_answer =
-          "Security answer must be at least 3 characters";
+      if (!formData.security_answer.trim() || formData.security_answer.trim().length < 3) {
+        newErrors.security_answer = "Security answer must be at least 3 characters";
       }
     }
 
-    // Step 5 has no required fields — nothing to validate
-
+    // Step 5 is optional — no required fields
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -228,9 +235,9 @@ function RegisterSection() {
   // ── Navigation ───────────────────────────────────────────────────────────────
 
   const nextStep = () => {
-    if (!validateStep(step)) return; // stay on current step and show errors
+    if (!validateStep(step)) return;
 
-    // confirm_password is only needed to validate step 1 — clear it after
+    // confirm_password has no use beyond step 1 — clear it from memory
     if (step === 1) {
       setFormData((prev) => ({ ...prev, confirm_password: "" }));
     }
@@ -242,10 +249,15 @@ function RegisterSection() {
     if (step > 1) setStep((prev) => prev - 1);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    // TODO: send formData to your API here
-  };
+  // ── Step indicator config ────────────────────────────────────────────────────
+
+  const STEPS_CONFIG = [
+    { label: "Basic Information", icon: "icon-basic-information" },
+    { label: "OTP Verification", icon: "icon-otp-verification" },
+    { label: "Identity Details", icon: "icon-identity-details" },
+    { label: "Security Setup", icon: "icon-security-setup" },
+    { label: "Profile", icon: "icon-profile" },
+  ];
 
   // ── Render ───────────────────────────────────────────────────────────────────
 
@@ -255,10 +267,10 @@ function RegisterSection() {
         <div className="row justify-content-center">
           <div className="col-12 col-lg-8">
             <div className="card shadow-sm">
-              {/* noValidate disables browser's built-in validation UI since we handle it ourselves */}
               <form onSubmit={submitHandler} noValidate>
                 <div className="card-body p-4">
-                  {/* Progress bar — width scales with step number */}
+
+                  {/* ── Progress bar ── */}
                   <div className="progress mb-4" style={{ height: "3px" }}>
                     <div
                       className="progress-bar"
@@ -270,71 +282,41 @@ function RegisterSection() {
                     />
                   </div>
 
-                  {/* Step indicators */}
+                  {/* ── Step indicators ── */}
                   <div className="signup-steps-ui d-flex justify-content-between mb-5">
-                    <div className="d-flex flex-column align-items-center">
-                      <div
-                        className={`signup-steps rounded-circle mb-2 ${step === 1 ? "active-step" : ""} ${step > 1 ? "completed-step" : ""}`}
-                      >
-                        <i
-                          className={
-                            step > 1 ? "icon-confirm" : "icon-basic-information"
-                          }
-                        />
-                      </div>
-                      <div className="text-muted small">Basic Information</div>
-                    </div>
-
-                    <div className="d-flex flex-column align-items-center">
-                      <div
-                        className={`signup-steps rounded-circle mb-2 ${step === 2 ? "active-step" : ""} ${step > 2 ? "completed-step" : ""}`}
-                      >
-                        <i
-                          className={
-                            step > 2 ? "icon-confirm" : "icon-otp-verification"
-                          }
-                        />
-                      </div>
-                      <div className="text-muted small">OTP Verification</div>
-                    </div>
-
-                    <div className="d-flex flex-column align-items-center">
-                      <div
-                        className={`signup-steps rounded-circle mb-2 ${step === 3 ? "active-step" : ""} ${step > 3 ? "completed-step" : ""}`}
-                      >
-                        <i
-                          className={
-                            step > 3 ? "icon-confirm" : "icon-identity-details"
-                          }
-                        />
-                      </div>
-                      <div className="text-muted small">Identity Details</div>
-                    </div>
-
-                    <div className="d-flex flex-column align-items-center">
-                      <div
-                        className={`signup-steps rounded-circle mb-2 ${step === 4 ? "active-step" : ""} ${step > 4 ? "completed-step" : ""}`}
-                      >
-                        <i
-                          className={
-                            step > 4 ? "icon-confirm" : "icon-security-setup"
-                          }
-                        />
-                      </div>
-                      <div className="text-muted small">Security Setup</div>
-                    </div>
-
-                    <div className="d-flex flex-column align-items-center">
-                      <div
-                        className={`signup-steps rounded-circle mb-2 ${step === 5 ? "active-step" : ""}`}
-                      >
-                        <i className="icon-profile" />
-                      </div>
-                      <div className="text-muted small">Profile</div>
-                    </div>
+                    {STEPS_CONFIG.map((s, index) => {
+                      const stepNumber = index + 1;
+                      const isActive = step === stepNumber;
+                      const isCompleted = step > stepNumber;
+                      return (
+                        <div
+                          key={stepNumber}
+                          className="d-flex flex-column align-items-center"
+                        >
+                          <div
+                            className={[
+                              "signup-steps rounded-circle mb-2",
+                              isActive ? "active-step" : "",
+                              isCompleted ? "completed-step" : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                          >
+                            <i
+                              className={
+                                isCompleted ? "icon-confirm" : s.icon
+                              }
+                            />
+                          </div>
+                          <div className="text-muted small">{s.label}</div>
+                        </div>
+                      );
+                    })}
                   </div>
 
-                  {/* Step 1 — Personal Information */}
+                  {/* ═══════════════════════════════════════════════════════
+                      Step 1 — Personal Information
+                  ═══════════════════════════════════════════════════════ */}
                   {step === 1 && (
                     <div className="step active" id="step1">
                       <h4 className="mb-4">Personal Information</h4>
@@ -345,16 +327,12 @@ function RegisterSection() {
                           type="text"
                           name="full_name"
                           className={`form-control ${errors.full_name ? "is-invalid" : ""}`}
-                          value={formData.full_name}
                           onChange={handleChange}
+                          value={formData.full_name}
                           maxLength={100}
                           autoComplete="name"
                         />
-                        {errors.full_name && (
-                          <div className="invalid-feedback">
-                            {errors.full_name}
-                          </div>
-                        )}
+                        <FieldError name="full_name" errors={errors} />
                       </div>
 
                       <div className="mb-3">
@@ -363,14 +341,12 @@ function RegisterSection() {
                           type="email"
                           name="email"
                           className={`form-control ${errors.email ? "is-invalid" : ""}`}
-                          value={formData.email}
                           onChange={handleChange}
+                          value={formData.email}
                           maxLength={254}
                           autoComplete="email"
                         />
-                        {errors.email && (
-                          <div className="invalid-feedback">{errors.email}</div>
-                        )}
+                        <FieldError name="email" errors={errors} />
                       </div>
 
                       <div className="mb-3">
@@ -379,18 +355,14 @@ function RegisterSection() {
                           type="tel"
                           name="phone_number"
                           className={`form-control ${errors.phone_number ? "is-invalid" : ""}`}
-                          value={formData.phone_number}
                           onChange={handleChange}
+                          value={formData.phone_number}
                           maxLength={11}
                           inputMode="numeric"
                           placeholder="03001234567"
                           autoComplete="tel"
                         />
-                        {errors.phone_number && (
-                          <div className="invalid-feedback">
-                            {errors.phone_number}
-                          </div>
-                        )}
+                        <FieldError name="phone_number" errors={errors} />
                       </div>
 
                       <div className="mb-3">
@@ -399,16 +371,12 @@ function RegisterSection() {
                           type="password"
                           name="password"
                           className={`form-control ${errors.password ? "is-invalid" : ""}`}
-                          value={formData.password}
                           onChange={handleChange}
+                          value={formData.password}
                           maxLength={128}
                           autoComplete="new-password"
                         />
-                        {errors.password && (
-                          <div className="invalid-feedback">
-                            {errors.password}
-                          </div>
-                        )}
+                        <FieldError name="password" errors={errors} />
                       </div>
 
                       <div className="mb-3">
@@ -417,16 +385,12 @@ function RegisterSection() {
                           type="password"
                           name="confirm_password"
                           className={`form-control ${errors.confirm_password ? "is-invalid" : ""}`}
-                          value={formData.confirm_password}
                           onChange={handleChange}
+                          value={formData.confirm_password}
                           maxLength={128}
                           autoComplete="new-password"
                         />
-                        {errors.confirm_password && (
-                          <div className="invalid-feedback">
-                            {errors.confirm_password}
-                          </div>
-                        )}
+                        <FieldError name="confirm_password" errors={errors} />
                       </div>
 
                       <div className="d-flex justify-content-end mt-4">
@@ -441,7 +405,9 @@ function RegisterSection() {
                     </div>
                   )}
 
-                  {/* Step 2 — OTP Verification */}
+                  {/* ═══════════════════════════════════════════════════════
+                      Step 2 — OTP Verification
+                  ═══════════════════════════════════════════════════════ */}
                   {step === 2 && (
                     <div className="step" id="step2">
                       <h4 className="mb-4">OTP Verification</h4>
@@ -457,15 +423,13 @@ function RegisterSection() {
                           type="text"
                           name="otp"
                           className={`form-control ${errors.otp ? "is-invalid" : ""}`}
-                          value={formData.otp}
-                          onChange={handleChange}
                           inputMode="numeric"
+                          onChange={handleChange}
+                          value={formData.otp}
                           maxLength={6}
                           autoComplete="one-time-code"
                         />
-                        {errors.otp && (
-                          <div className="invalid-feedback">{errors.otp}</div>
-                        )}
+                        <FieldError name="otp" errors={errors} />
                       </div>
 
                       <div className="d-flex justify-content-between mt-4">
@@ -487,7 +451,9 @@ function RegisterSection() {
                     </div>
                   )}
 
-                  {/* Step 3 — Identity Details */}
+                  {/* ═══════════════════════════════════════════════════════
+                      Step 3 — Identity Details
+                  ═══════════════════════════════════════════════════════ */}
                   {step === 3 && (
                     <div className="step" id="step3">
                       <h4 className="mb-4">Identity Details</h4>
@@ -498,15 +464,13 @@ function RegisterSection() {
                           type="text"
                           name="cnic"
                           className={`form-control ${errors.cnic ? "is-invalid" : ""}`}
-                          value={formData.cnic}
                           onChange={handleCnicChange}
-                          inputMode="numeric"
+                          value={formData.cnic}
                           maxLength={15}
+                          inputMode="numeric"
                           placeholder="12345-1234567-1"
                         />
-                        {errors.cnic && (
-                          <div className="invalid-feedback">{errors.cnic}</div>
-                        )}
+                        <FieldError name="cnic" errors={errors} />
                       </div>
 
                       <div className="mb-3">
@@ -515,14 +479,12 @@ function RegisterSection() {
                           type="text"
                           name="city"
                           className={`form-control ${errors.city ? "is-invalid" : ""}`}
-                          value={formData.city}
                           onChange={handleChange}
+                          value={formData.city}
                           maxLength={100}
                           autoComplete="address-level2"
                         />
-                        {errors.city && (
-                          <div className="invalid-feedback">{errors.city}</div>
-                        )}
+                        <FieldError name="city" errors={errors} />
                       </div>
 
                       <div className="row mb-3">
@@ -532,16 +494,12 @@ function RegisterSection() {
                             type="text"
                             name="state"
                             className={`form-control ${errors.state ? "is-invalid" : ""}`}
-                            value={formData.state}
                             onChange={handleChange}
+                            value={formData.state}
                             maxLength={100}
                             autoComplete="address-level1"
                           />
-                          {errors.state && (
-                            <div className="invalid-feedback">
-                              {errors.state}
-                            </div>
-                          )}
+                          <FieldError name="state" errors={errors} />
                         </div>
                         <div className="col-md-6">
                           <label className="form-label">Date of Birth</label>
@@ -549,15 +507,11 @@ function RegisterSection() {
                             type="date"
                             name="date_of_birth"
                             className={`form-control ${errors.date_of_birth ? "is-invalid" : ""}`}
-                            value={formData.date_of_birth}
                             onChange={handleChange}
+                            value={formData.date_of_birth}
                             max={new Date().toISOString().split("T")[0]}
                           />
-                          {errors.date_of_birth && (
-                            <div className="invalid-feedback">
-                              {errors.date_of_birth}
-                            </div>
-                          )}
+                          <FieldError name="date_of_birth" errors={errors} />
                         </div>
                       </div>
 
@@ -567,16 +521,12 @@ function RegisterSection() {
                           type="text"
                           name="full_address"
                           className={`form-control ${errors.full_address ? "is-invalid" : ""}`}
-                          value={formData.full_address}
                           onChange={handleChange}
+                          value={formData.full_address}
                           maxLength={300}
                           autoComplete="street-address"
                         />
-                        {errors.full_address && (
-                          <div className="invalid-feedback">
-                            {errors.full_address}
-                          </div>
-                        )}
+                        <FieldError name="full_address" errors={errors} />
                       </div>
 
                       <div className="d-flex justify-content-between mt-4">
@@ -598,7 +548,9 @@ function RegisterSection() {
                     </div>
                   )}
 
-                  {/* Step 4 — Security Setup */}
+                  {/* ═══════════════════════════════════════════════════════
+                      Step 4 — Security Setup
+                  ═══════════════════════════════════════════════════════ */}
                   {step === 4 && (
                     <div className="step" id="step4">
                       <h4 className="mb-4">Security Setup</h4>
@@ -608,10 +560,10 @@ function RegisterSection() {
                         <select
                           name="security_question_id"
                           className={`form-select ${errors.security_question_id ? "is-invalid" : ""}`}
-                          value={formData.security_question_id}
                           onChange={handleChange}
+                          value={formData.security_question_id}
                         >
-                          {/* value="" makes this falsy, so our !security_question_id check catches it */}
+                          {/* value="" so the empty guard in validateStep works correctly */}
                           <option value="">Select a security question</option>
                           {securityQuestions.map((item) => (
                             <option key={item.id} value={item.id}>
@@ -619,11 +571,7 @@ function RegisterSection() {
                             </option>
                           ))}
                         </select>
-                        {errors.security_question_id && (
-                          <div className="invalid-feedback d-block">
-                            {errors.security_question_id}
-                          </div>
-                        )}
+                        <FieldError name="security_question_id" errors={errors} />
                       </div>
 
                       <div className="mb-3">
@@ -632,16 +580,12 @@ function RegisterSection() {
                           type="text"
                           name="security_answer"
                           className={`form-control ${errors.security_answer ? "is-invalid" : ""}`}
-                          value={formData.security_answer}
                           onChange={handleChange}
+                          value={formData.security_answer}
                           maxLength={200}
                           autoComplete="off"
                         />
-                        {errors.security_answer && (
-                          <div className="invalid-feedback">
-                            {errors.security_answer}
-                          </div>
-                        )}
+                        <FieldError name="security_answer" errors={errors} />
                       </div>
 
                       <div className="d-flex justify-content-between mt-4">
@@ -663,7 +607,9 @@ function RegisterSection() {
                     </div>
                   )}
 
-                  {/* Step 5 — Profile (all fields are optional) */}
+                  {/* ═══════════════════════════════════════════════════════
+                      Step 5 — Profile (all fields optional)
+                  ═══════════════════════════════════════════════════════ */}
                   {step === 5 && (
                     <div className="step" id="step5">
                       <h4 className="mb-4">Profile</h4>
@@ -678,8 +624,8 @@ function RegisterSection() {
                             type="text"
                             name="occupation"
                             className="form-control"
-                            value={formData.occupation}
                             onChange={handleChange}
+                            value={formData.occupation}
                             maxLength={100}
                           />
                         </div>
@@ -692,12 +638,21 @@ function RegisterSection() {
                           <input
                             type="text"
                             name="monthly_income"
-                            className="form-control"
-                            value={formData.monthly_income}
-                            onChange={handleIncomeChange}
+                            className={`form-control ${errors.monthly_income ? "is-invalid" : ""}`}
                             inputMode="numeric"
+                            onChange={(e) => {
+                              // Allow only digits
+                              if (
+                                e.target.value === "" ||
+                                REGEX.income.test(e.target.value)
+                              ) {
+                                handleChange(e);
+                              }
+                            }}
+                            value={formData.monthly_income}
                             maxLength={12}
                           />
+                          <FieldError name="monthly_income" errors={errors} />
                         </div>
 
                         <div className="col-md-12">
@@ -713,11 +668,7 @@ function RegisterSection() {
                             accept="image/jpeg,image/png,image/webp"
                             onChange={handleFileChange}
                           />
-                          {errors.profile_picture && (
-                            <div className="invalid-feedback d-block">
-                              {errors.profile_picture}
-                            </div>
-                          )}
+                          <FieldError name="profile_picture" errors={errors} />
                           <div className="form-text">
                             JPG, PNG, or WEBP · max {MAX_FILE_SIZE_MB}MB
                           </div>
@@ -741,6 +692,7 @@ function RegisterSection() {
                       </div>
                     </div>
                   )}
+
                 </div>
               </form>
             </div>
@@ -752,3 +704,11 @@ function RegisterSection() {
 }
 
 export default RegisterSection;
+
+
+
+
+
+
+
+
